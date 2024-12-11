@@ -72,7 +72,7 @@ router.post('/book-session', async (req, res) => {
     }
 
     // Validate session time
-    const sessionTime = new Date(session_date);
+    const sessionTime = new Date(session_date+'+05:30');
     const hour = session_date.toString().split('T')[1].split(':')[0];
     const minutes = session_date.toString().split('T')[1].split(':')[1];
     if (hour < 9 || hour > 16 || minutes != 0) {

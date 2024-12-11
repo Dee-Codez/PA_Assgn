@@ -10,7 +10,7 @@ const bookingRoutes = require('./routes/booking');
 const speakerRoutes = require('./routes/speakers');
 
 const app = express();
-const port = 10000;
+const port = 3000;
 
 // Middlewares
 app.use(express.json());
@@ -25,7 +25,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `https://pa-assgn.onrender.com`,
+      url: `http://localhost:${port}`
     },
   ],
 };
@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
   const htmlContent = `
     <html>
       <body>
-        <h1>Welcome to the Express API with SwaggerUI. Made By Debam Pati</h1>
+        <h1>Welcome to the Express API with SwaggerUI By Debam Pati</h1>
         <button onclick="window.location.href='/api-docs'">Go to API Docs</button>
       </body>
     </html>

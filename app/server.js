@@ -10,7 +10,7 @@ const bookingRoutes = require('./routes/booking');
 const speakerRoutes = require('./routes/speakers');
 
 const app = express();
-const port = 3000;
+const port = 10000;
 
 // Middlewares
 app.use(express.json());
@@ -25,7 +25,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `https://pa-assgn.vercel.app`,
+      url: `https://pa-assgn.onrender.com`,
     },
   ],
 };
@@ -58,6 +58,6 @@ app.get('/', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on https://pa-assgn.vercel.app`);
-  console.log(`Swagger UI is available at https://pa-assgn.vercel.app/api-docs`);
+  console.log(`Server is running on https://pa-assgn.onrender.com`);
+  console.log(`Swagger UI is available at https://pa-assgn.onrender.com/api-docs`);
 });

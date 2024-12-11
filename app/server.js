@@ -53,7 +53,15 @@ app.use('/speakers', speakerRoutes);
  *         description: Returns a welcome message.
  */
 app.get('/', (req, res) => {
-  res.send('Hello, World!');
+  const htmlContent = `
+    <html>
+      <body>
+        <h1>Welcome to the Express API with SwaggerUI. Made By Debam Pati</h1>
+        <button onclick="window.location.href='/api-docs'">Go to API Docs</button>
+      </body>
+    </html>
+  `;
+  res.status(200).send(htmlContent);
 });
 
 // Start the server

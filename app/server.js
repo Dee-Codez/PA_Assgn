@@ -25,7 +25,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `http://localhost:${port}`,
+      url: `https://pa-assgn.vercel.app`,
     },
   ],
 };
@@ -58,6 +58,6 @@ app.get('/', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-  console.log(`Swagger UI is available at http://localhost:${port}/api-docs`);
+  console.log(`Server is running on https://pa-assgn.vercel.app`);
+  console.log(`Swagger UI is available at https://pa-assgn.vercel.app/api-docs`);
 });

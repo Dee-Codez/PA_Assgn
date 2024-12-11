@@ -43,7 +43,7 @@ router.post('/send-otp', async (req, res) => {
     if (userResult.rows.length > 0) {
       return res.status(400).json({ error: 'User already exists' });
     }
-    
+
     // Generate a random 6-digit OTP
     let otp;
     if (process.env.NODE_ENV == 'dev') {
@@ -76,7 +76,7 @@ router.post('/send-otp', async (req, res) => {
  * @swagger
  * /auth/register:
  *   post:
- *     summary: Register New User
+ *     summary: Registers New User And Logs Them In
  *     requestBody:
  *       required: true
  *       content:
@@ -151,7 +151,7 @@ router.post('/register', async (req, res) => {
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login
+ *     summary: Logs User In By Setting Token Cookies
  *     requestBody:
  *       required: true
  *       content:
@@ -214,4 +214,76 @@ router.post('/login', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /auth/logout:
+ *   delete:
+ *     summary: Logs User Out By Deleting Token Cookies
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ */
+router.delete('/logout', (req, res) => {
+  res.clearCookie('token', { httpOnly: true, secure: true });
+  res.status(200).json({ message: 'Logout successful' });
+});
+
+/**
+ * @swagger
+ * /auth/profile:
+ *   get:
+ *     summary: Get Profile of Currently Signed In User
+ *     responses:
+ *       200:
+ *         description: Profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                   example: user@example.com
+ *                 user_type:
+ *                   type: string
+ *                   example: speaker
+ *                 expertise:
+ *                   type: string 
+ *                   example: "JavaScript, Node.js, Express"
+ *                 price_per_session:
+ *                   type: number
+ *                   example: 100
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Failed to retrieve profile
+ */
+router.get('/profile', async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ error: 'No User Logged In' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userResult = await pool.query('SELECT email, user_type, expertise, price_per_session FROM users_js WHERE email = $1', [decoded.email]);
+
+    if (userResult.rows.length === 0) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const user = userResult.rows[0];
+    if (user.user_type === 'user') {
+      res.status(200).json({ email: user.email, user_type: user.user_type });
+    }else{
+      res.status(200).json({ email: user.email, user_type: user.user_type, expertise: user.expertise || 'N/A', price_per_session: user.price_per_session || 'Not Updated' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve profile' });
+  }
+});
+
 module.exports = router;
+

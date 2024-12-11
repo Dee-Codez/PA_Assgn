@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const pool = require('./utility/db');
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/booking');
+const speakerRoutes = require('./routes/speakers');
 
 const app = express();
 const port = 3000;
@@ -40,7 +41,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/auth', authRoutes);
 app.use('/booking', bookingRoutes);
-
+app.use('/speakers', speakerRoutes);
 
 /**
  * @swagger
@@ -53,27 +54,6 @@ app.use('/booking', bookingRoutes);
  */
 app.get('/', (req, res) => {
   res.send('Hello, World!');
-});
-
-/**
- * @swagger
- * /api/sample:
- *   get:
- *     summary: Sample endpoint
- *     responses:
- *       200:
- *         description: Returns a sample message.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: This is a sample endpoint
- */
-app.get('/api/sample', (req, res) => {
-  res.json({ message: 'This is a sample endpoint' });
 });
 
 // Start the server

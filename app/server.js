@@ -10,7 +10,7 @@ const bookingRoutes = require('./routes/booking');
 const speakerRoutes = require('./routes/speakers');
 
 const app = express();
-const port = 3000;
+const port = 10000;
 
 // Middlewares
 app.use(express.json());
@@ -25,7 +25,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `http://localhost:${port}`
+      url: `https://pa-assgn.onrender.com`,
     },
   ],
 };
